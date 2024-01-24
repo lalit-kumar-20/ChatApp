@@ -19,19 +19,29 @@ const Form = ({
      const handleSubmit = async(e) => {
          console.log('data send is like', data);
           e.preventDefault()
-        const res = await api.post(`/api/auth/${isSignInPage ? 'login' : 'register'}`, data)
-        console.log(res);
-         if(res.status === 400) {
-             alert('Invalid credentials')
-           }else{
-             const resData = await res.json();
-             console.log("data received is like",resData)
-             if(resData.token) {
-                 localStorage.setItem('user:token', resData.token)
-                 localStorage.setItem('user:detail', JSON.stringify(resData.user))
-                 navigate('/')
-             }
-       }
+          try {
+            const res = await api.post(`/api/auth/${isSignInPage ? 'login' : 'register'}`, data);
+            console.log(" your response",res);
+    
+            if (res.status === 400) {
+              console.log("lalit",res.status)
+                alert('Invalid credentials');
+            } else {
+                const resData = await res.data;
+                console.log('data received is like', resData);
+    
+                if (resData.token) {
+                    localStorage.setItem('user:token', resData.token);
+                    localStorage.setItem('user:detail', JSON.stringify(resData.user));
+                     navigate('/');
+               }
+            }
+        } catch (error) {
+            // Handle any error that occurred during the fetch or JSON parsing
+            console.error('Please check you entered data once:', error);
+            // Optionally show an error message to the user
+           alert(error.response.data);
+        }
     }
   return (
     <div className="bg-light h-screen flex items-center justify-center">

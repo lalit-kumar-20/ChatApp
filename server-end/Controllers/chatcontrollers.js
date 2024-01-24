@@ -85,6 +85,18 @@ const fetchAllChat=async (req, res) => {
 }
 
 // this is to fetch list of all users who use chatApp so that admin can select a particular user to start conversation
+const totalAvailablePeople=async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const users = await Users.find({ _id: { $ne: userId } });
+        const usersData = Promise.all(users.map(async (user) => {
+            return { user: { email: user.email, fullName: user.fullName, receiverId: user._id } }
+        }))
+        res.status(200).json(await usersData);
+    } catch (error) {
+        console.log('Error', error)
+    }
+}
 
 
 
@@ -93,5 +105,4 @@ const fetchAllChat=async (req, res) => {
 
 
 
-
-module.exports =  {CreateConversation, fetchAllChat,StoreChatsWithUser, fetchChatHistory} ;
+module.exports =  {CreateConversation, fetchAllChat,StoreChatsWithUser, fetchChatHistory,totalAvailablePeople} ;
