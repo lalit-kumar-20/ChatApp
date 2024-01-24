@@ -2,6 +2,7 @@ import { useState } from "react"
 import Button from "../../components/button"
 import Input from "../../components/input"
 import { useNavigate } from 'react-router-dom'
+import api from '../../API_Service/api_service'
 
 const Form = ({
     isSignInPage = false,
@@ -16,26 +17,21 @@ const Form = ({
      const navigate = useNavigate()
 
      const handleSubmit = async(e) => {
-//         console.log('data :>> ', data);
-//         e.preventDefault()
-//         const res = await fetch(`http://localhost:8000/api/${isSignInPage ? 'login' : 'register'}`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(data)
-//         })
-
-//         if(res.status === 400) {
-//             alert('Invalid credentials')
-//         }else{
-//             const resData = await res.json()
-//             if(resData.token) {
-//                 localStorage.setItem('user:token', resData.token)
-//                 localStorage.setItem('user:detail', JSON.stringify(resData.user))
-//                 navigate('/')
-//             }
-//         }
+         console.log('data send is like', data);
+          e.preventDefault()
+        const res = await api.post(`/api/auth/${isSignInPage ? 'login' : 'register'}`, data)
+        console.log(res);
+         if(res.status === 400) {
+             alert('Invalid credentials')
+           }else{
+             const resData = await res.json();
+             console.log("data received is like",resData)
+             if(resData.token) {
+                 localStorage.setItem('user:token', resData.token)
+                 localStorage.setItem('user:detail', JSON.stringify(resData.user))
+                 navigate('/')
+             }
+       }
     }
   return (
     <div className="bg-light h-screen flex items-center justify-center">

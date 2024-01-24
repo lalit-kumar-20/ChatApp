@@ -4,10 +4,10 @@ import Form from "./modules/Auth_Form/form";
 import Home from "./modules/HomePage/home";
 import { Route, Routes, Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ children }) => {
-  const isLoggedIn = localStorage.getItem("user:token") !== null || true;
+const ProtectedRoute = ({ children, auth =false}) => {
+  const isLoggedIn = localStorage.getItem("user:token") !== null || false;
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn && auth) {
     return <Navigate to={"/users/signin"} />;
   } else if (
     isLoggedIn &&
@@ -26,7 +26,7 @@ function App() {
       <Route
         path="/users/signup"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute  >
             <Form isSignInPage={false} />
           </ProtectedRoute>
         }
@@ -42,7 +42,7 @@ function App() {
       <Route
         path="/"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute auth={true}>
             <Home />
           </ProtectedRoute>
         }
