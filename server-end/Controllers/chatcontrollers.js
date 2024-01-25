@@ -72,7 +72,8 @@ const fetchChatHistory=async (req, res) => {
 const fetchAllChat=async (req, res) => {
     try {
         const userId = req.params.userId;
-        const conversations = await Conversations.find({ members: { $in: [userId] } });
+       // const conversations = new Set();
+        const  conversations = await Conversations.find({ members: { $in: [userId] } });
         const conversationUserData = Promise.all(conversations.map(async (conversation) => {
             const receiverId = conversation.members.find((member) => member !== userId);
             const user = await Users.findById(receiverId);

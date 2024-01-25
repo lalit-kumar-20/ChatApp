@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import Img1 from '../../Assets/img5.png'
+import Img1 from '../../Assets/profile Img.jpeg'
 import testimg from '../../Assets/prifile.png'
 import Input from '../../components/input'
 import { io } from 'socket.io-client'
@@ -11,8 +11,10 @@ const Home = () => {
 	const [message, setMessage] = useState('')
 	const [users, setUsers] = useState([])
 	const [socket, setSocket] = useState(null)
-	const messageRef = useRef(null)
-
+	const messageRef = useRef(null)    
+	
+	
+ 
 	 useEffect(() => {
 	 	setSocket(io('http://localhost:8080'))
 	 }, [])
@@ -28,8 +30,9 @@ const Home = () => {
 				messages: [...prev.messages, { user: data.user, message: data.message }]
 			}))
 		})
+		
 	}, [socket])
-
+	
 	useEffect(() => {
 		messageRef?.current?.scrollIntoView({ behavior: 'smooth' })
 	}, [messages?.messages])
@@ -46,8 +49,7 @@ const Home = () => {
 			});
 			console.log("lalit data is:  ",res);
 			const resData = await res.json()
-			console.log("dxfcygvui",resData)
-
+			console.log("got conversations",resData)
 			setConversations(resData)
 		}
 		fetchConversations()
@@ -67,6 +69,8 @@ const Home = () => {
 		fetchUsers()
 	}, [])
 
+	
+
 	const fetchMessages = async (conversationId, receiver) => {
 		const res = await fetch(`http://localhost:8000/api/message/${conversationId}?senderId=${user?.id}&&receiverId=${receiver?.receiverId}`, {
 			method: 'GET',
@@ -75,12 +79,14 @@ const Home = () => {
 			}
 		});
 		const resData = await res.json()
-	//	console.log("kkkk",resData);
-		setMessages({ messages: resData, receiver, conversationId })
+		
+	    setMessages({ messages: resData, receiver, conversationId })
+	
 	}
 
 	const sendMessage = async (e) => {
 		setMessage('')
+		console.log("git user id", user.id)
 		socket?.emit('sendMessage', {
 			senderId: user?.id,
 			receiverId: messages?.receiver?.receiverId,
@@ -92,13 +98,14 @@ const Home = () => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({
+			body: JSON.stringify({	
 				conversationId: messages?.conversationId,
 				senderId: user?.id,
-				message,
+		     	message,
 				receiverId: messages?.receiver?.receiverId
 			})
 		});
+	 
 	}
 
 	return (
@@ -136,6 +143,7 @@ const Home = () => {
 			</div>
 			<div className='w-[50%] h-screen bg-white flex flex-col items-center'>
 				{
+				
 					messages?.receiver?.fullName &&
 					<div className='w-[75%] bg-secondary h-[80px] my-14 rounded-full flex items-center px-14 py-2'>
 						<div className='cursor-pointer'><img src={Img1} width={60} height={60} className="rounded-full" /></div>
@@ -198,7 +206,9 @@ const Home = () => {
 							users.map(({ userId, user }) => {
 								return (
 									<div className='flex items-center py-8 border-b border-b-gray-300'>
-										<div className='cursor-pointer flex items-center' onClick={() => fetchMessages('new', user)}>
+										<div className='cursor-pointer flex items-center' onClick={() => {console.log('click at selected user'); fetchMessages('new', user)
+											
+										}}>
 											<div><img src={Img1} className="w-[60px] h-[60px] rounded-full p-[2px] border border-primary" /></div>
 											<div className='ml-6'>
 												<h3 className='text-lg font-semibold'>{user?.fullName}</h3>
