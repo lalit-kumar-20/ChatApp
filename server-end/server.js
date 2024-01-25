@@ -5,16 +5,11 @@ const cors = require('cors');
 
 
 
-// // const io = require('socket.io')(8080, {
-// //     cors: {
-// //         origin: 'http://localhost:3002',
-// //     }
-// // });
-
-
-
 // Connect DB
 require('./db');
+
+// Socket.io
+require('./Socket/socket');
 
 // app Use
 const app = express();
@@ -34,3 +29,5 @@ app.use('/api', conversation);
 app.listen(port, () => {
     console.log('listening on port ' + port);
 })
+
+

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Img1 from '../../Assets/img5.png'
 import testimg from '../../Assets/prifile.png'
 import Input from '../../components/input'
-//import { io } from 'socket.io-client'
+import { io } from 'socket.io-client'
 
 const Home = () => {
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('user:detail')))
@@ -13,26 +13,26 @@ const Home = () => {
 	const [socket, setSocket] = useState(null)
 	const messageRef = useRef(null)
 
-	// useEffect(() => {
-	// 	setSocket(io('http://localhost:8080'))
-	// }, [])
+	 useEffect(() => {
+	 	setSocket(io('http://localhost:8080'))
+	 }, [])
 
-	// useEffect(() => {
-	// 	socket?.emit('addUser', user?.id);
-	// 	socket?.on('getUsers', users => {
-	// 		console.log('activeUsers :>> ', users);
-	// 	})
-	// 	socket?.on('getMessage', data => {
-	// 		setMessages(prev => ({
-	// 			...prev,
-	// 			messages: [...prev.messages, { user: data.user, message: data.message }]
-	// 		}))
-	// 	})
-	// }, [socket])
+	useEffect(() => {
+		socket?.emit('addUser', user?.id);
+		socket?.on('getUsers', users => {
+			console.log('activeUsers :>> ', users);
+		})
+		socket?.on('getMessage', data => {
+			setMessages(prev => ({
+				...prev,
+				messages: [...prev.messages, { user: data.user, message: data.message }]
+			}))
+		})
+	}, [socket])
 
-	// useEffect(() => {
-	// 	messageRef?.current?.scrollIntoView({ behavior: 'smooth' })
-	// }, [messages?.messages])
+	useEffect(() => {
+		messageRef?.current?.scrollIntoView({ behavior: 'smooth' })
+	}, [messages?.messages])
 
 	useEffect(() => {
 		const loggedInUser = JSON.parse(localStorage.getItem('user:detail'))
@@ -75,7 +75,7 @@ const Home = () => {
 			}
 		});
 		const resData = await res.json()
-		console.log("kkkk",resData);
+	//	console.log("kkkk",resData);
 		setMessages({ messages: resData, receiver, conversationId })
 	}
 
