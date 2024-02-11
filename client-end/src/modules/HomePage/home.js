@@ -42,7 +42,7 @@ const Home = () => {
 		const loggedInUser = JSON.parse(localStorage.getItem('user:detail'))
 		console.log("lalit id is :  ",loggedInUser.id);
 		const fetchConversations = async () => {
-			const res = await fetch(`http://localhost:8000/api/conversation/${loggedInUser?.id}`, {
+			const res = await fetch(`https://chatapp-backend-q2cq.onrender.com/api/conversation/${loggedInUser?.id}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const Home = () => {
 
 	useEffect(() => {
 		const fetchUsers = async () => {
-			const res = await fetch(`http://localhost:8000/api/users/${user?.id}`, {
+			const res = await fetch(`https://chatapp-backend-q2cq.onrender.com/api/users/${user?.id}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const Home = () => {
 	
 
 	const fetchMessages = async (conversationId, receiver) => {
-		const res = await fetch(`http://localhost:8000/api/message/${conversationId}?senderId=${user?.id}&&receiverId=${receiver?.receiverId}`, {
+		const res = await fetch(`https://chatapp-backend-q2cq.onrender.com/api/message/${conversationId}?senderId=${user?.id}&&receiverId=${receiver?.receiverId}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const Home = () => {
 			message,
 			conversationId: messages?.conversationId
 		});
-		const res = await fetch(`http://localhost:8000/api/message`, {
+		const res = await fetch(`https://chatapp-backend-q2cq.onrender.com//api/message`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
