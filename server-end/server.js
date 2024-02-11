@@ -15,7 +15,6 @@ require('./Socket/socket');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
 app.use(cors({ origin: 'https://chat-app-op6x.vercel.app' }));
 
 const port = process.env.PORT || 8000;
