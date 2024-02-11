@@ -19,11 +19,7 @@ app.use(cors({ origin: 'https://chat-app-op6x.vercel.app' }));
 
 const port = process.env.PORT || 8000;
 
-app.get('*',(req,res,next)=>{
-    res.status(200).json({
-      message:'bad request'
-    })
-  })
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api', conversation);
