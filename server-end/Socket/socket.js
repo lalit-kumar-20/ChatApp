@@ -3,10 +3,8 @@
 const Conversations= require('../models/ConversationSchema');
 const Messages= require('../models/MessageSchema');
  
- const io = require('socket.io')(8080, {
-    cors: {
-        origin: '*',
-    }
+const io = require('socket.io')(8080, {
+    cors: true
 });
 
 let users = [];
