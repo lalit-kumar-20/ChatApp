@@ -17,18 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(cors({ origin: 'https://chat-app-op6x.vercel.app' }));
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "*",
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers", 
-      "*",
-    );
-    next();     
-});
 
 const port = process.env.PORT || 8000;
 
