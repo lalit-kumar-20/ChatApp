@@ -27,8 +27,9 @@ const Home = () => {
 		socket?.on('getMessage', data => {
 			setMessages(prev => ({
 				...prev,
-				messages: [...prev.messages, { user: data.user, message: data.message }]
-			}))
+				messages: prev.messages ? [...prev.messages, { user: data.user, message: data.message }] : [{ user: data.user, message: data.message }]
+			  }))
+			  
 		})
 		
 	}, [socket])
@@ -53,7 +54,7 @@ const Home = () => {
 			setConversations(resData)
 		}
 		fetchConversations()
-	}, [])
+	}, [message])
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -212,7 +213,7 @@ const Home = () => {
 											<div><img src={Img1} className="w-[60px] h-[60px] rounded-full p-[2px] border border-primary" /></div>
 											<div className='ml-6'>
 												<h3 className='text-lg font-semibold'>{user?.fullName}</h3>
-												<p className='text-sm font-light text-gray-600'>{user?.email}</p>
+										    	<p className='text-sm font-light text-gray-600'>{user?.email}</p>
 											</div>
 										</div>
 									 </div>

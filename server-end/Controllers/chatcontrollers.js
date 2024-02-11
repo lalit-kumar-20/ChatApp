@@ -25,7 +25,7 @@ const StoreChatsWithUser= async (req, res) => {
         if (conversationId === 'new' && receiverId) {
             const newCoversation = new Conversations({ members: [senderId, receiverId] });
             await newCoversation.save();
-            const newMessage = new Messages({ conversationId: newCoversation._id, senderId, message });
+            const newMessage = new Messages({ conversationId: newCoversation?._id, senderId, message });
             await newMessage.save();
             return res.status(200).send('Message sent successfully');
         } else if (!conversationId && !receiverId) {
@@ -48,7 +48,7 @@ const fetchChatHistory=async (req, res) => {
             const messages = await Messages.find({ conversationId });
             const messageUserData = Promise.all(messages.map(async (message) => {
                 const user = await Users.findById(message.senderId);
-                return { user: { id: user._id, email: user.email, fullName: user.fullName }, message: message.message }
+                return { user: { id: user?._id, email: user?.email, fullName: user?.fullName }, message: message?.message }
             }));
             res.status(200).json(await messageUserData);
         }
@@ -56,7 +56,7 @@ const fetchChatHistory=async (req, res) => {
         if (conversationId === 'new') {
             const checkConversation = await Conversations.find({ members: { $all: [req.query.senderId, req.query.receiverId] } });
             if (checkConversation.length > 0) {
-                checkMessages(checkConversation[0]._id);
+                checkMessages(checkConversation[0]?._id);
             } else {
                 return res.status(200).json([])
             }
@@ -77,7 +77,7 @@ const fetchAllChat=async (req, res) => {
         const conversationUserData = Promise.all(conversations.map(async (conversation) => {
             const receiverId = conversation.members.find((member) => member !== userId);
             const user = await Users.findById(receiverId);
-            return { user: { receiverId: user._id, email: user.email, fullName: user.fullName }, conversationId: conversation._id }
+            return { user: { receiverId: user?._id, email: user?.email, fullName: user?.fullName }, conversationId: conversation?._id }
         }))
         res.status(200).json(await conversationUserData);
     } catch (error) {
@@ -91,7 +91,7 @@ const totalAvailablePeople=async (req, res) => {
         const userId = req.params.userId;
         const users = await Users.find({ _id: { $ne: userId } });
         const usersData = Promise.all(users.map(async (user) => {
-            return { user: { email: user.email, fullName: user.fullName, receiverId: user._id } }
+            return { user: { email: user?.email, fullName: user?.fullName, receiverId: user?._id } }
         }))
         res.status(200).json(await usersData);
     } catch (error) {
