@@ -94,7 +94,7 @@ const Home = () => {
 			message,
 			conversationId: messages?.conversationId
 		});
-		const res = await fetch(`https://chatapp-backend-q2cq.onrender.com//api/message`, {
+		const res = await fetch(`https://chatapp-backend-q2cq.onrender.com/api/message`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
